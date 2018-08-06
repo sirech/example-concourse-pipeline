@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+set -o nounset
+set -o pipefail
+
+export CONCOURSE_URL=https://concourse-ci.domain.com
+export CONCOURSE_TARGET=example
+export PIPELINE_NAME="example-concourse-pipeline"

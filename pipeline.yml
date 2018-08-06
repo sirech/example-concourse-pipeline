@@ -1,0 +1,30 @@
+resources:
+- name: git
+  type: git
+  source:
+    uri: git@github.com:sirech/example-concourse-pipeline.git
+    branch: master
+
+- name: dev-container
+  type: docker-image
+  source:
+    repository: AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/dev-container
+
+jobs:
+- name: prepare
+  serial: true
+  plan:
+  - get: git
+    trigger: true
+  - aggregate:
+      - put: dev-container
+        params:
+          <<: *docker-params
+          build: git
+          dockerfile: git/Dockerfile.build
+  - task: pipeline
+    image: dev-container
+    params:
+      CONCOURSE_USER: concourse
+      CONCOURSE_PASSWORD: ((concourse_password)
+    file: git/pipeline/tasks/update_pipeline.yml
