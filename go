@@ -4,10 +4,10 @@ set -e
 set -o nounset
 set -o pipefail
 
+SCRIPT_DIR=$(cd "$(dirname "$0")" ; pwd -P)
+
 # shellcheck source=./go.variables
 source "${SCRIPT_DIR}/go.variables"
-
-SCRIPT_DIR=$(cd "$(dirname "$0")" ; pwd -P)
 
 goal_update-pipeline() {
   pushd "${SCRIPT_DIR}" > /dev/null
@@ -21,6 +21,24 @@ goal_update-pipeline() {
       --pipeline "${PIPELINE_NAME}" \
       --config pipeline.yml
   popd > /dev/null
+}
+
+goal_linter-sh() {
+  shellcheck go*
+}
+
+goal_linter-js() {
+  npm run linter:js
+}
+
+goal_linter-css() {
+  npm run linter:css
+}
+
+goal_linter-docker() {
+  dockerfiles=$(find . -name 'Dockerfile*' -not -path './node_modules/*' -print | tr '\n' ' ')
+  # shellcheck disable=SC2086
+  hadolint ${dockerfiles}
 }
 
 TARGET=${1:-}

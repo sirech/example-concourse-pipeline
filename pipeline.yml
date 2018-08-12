@@ -46,6 +46,41 @@ jobs:
       CONCOURSE_PASSWORD: ((concourse_password)
     file: git/pipeline/tasks/update_pipeline.yml
 
+- name: lint
+  serial: true
+  plan:
+  - aggregate:
+    - get: git
+      passed: [prepare]
+      trigger: true
+    - get: dev-container
+      passed: [prepare]
+  - aggregate:
+    - task: lint-sh
+      image: dev-container
+      params:
+        <<: *common-params
+        TARGET: sh
+      file: git/pipeline/tasks/linter.yml
+    - task: lint-js
+      image: dev-container
+      params:
+        <<: *common-params
+        TARGET: js
+      file: git/pipeline/tasks/linter.yml
+    - task: lint-css
+      image: dev-container
+      params:
+        <<: *common-params
+        TARGET: css
+      file: git/pipeline/tasks/linter.yml
+    - task: lint-docker
+      image: dev-container
+      params:
+        <<: *common-params
+        TARGET: docker
+      file: git/pipeline/tasks/linter.yml
+
 docker-params: &docker-params
   tag: git/.git/HEAD
   tag_as_latest: true
