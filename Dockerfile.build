@@ -1,0 +1,14 @@
+FROM node:10.4.1-stretch
+
+ENV HADOLINT_VERSION='v1.10.4' \
+    HADOLINT_SHA256='66815d142f0ed9b0ea1120e6d27142283116bf26'
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+RUN apt-get update && \
+    apt-get -y install --no-install-recommends sudo curl shellcheck && \
+    curl -Lk "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/hadolint-Linux-x86_64" -o /usr/bin/hadolint && \
+    chmod +x /usr/bin/hadolint && \
+    echo ${HADOLINT_SHA256} /usr/bin/hadolint | sha1sum -c - && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*

@@ -28,3 +28,9 @@ jobs:
       CONCOURSE_USER: concourse
       CONCOURSE_PASSWORD: ((concourse_password)
     file: git/pipeline/tasks/update_pipeline.yml
+
+docker-params: &docker-params
+  tag: git/.git/HEAD
+  tag_as_latest: true
+  cache: true
+  cache_tag: latest
