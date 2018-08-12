@@ -10,6 +10,11 @@ resources:
   source:
     repository: AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/dev-container
 
+- name: serverspec-container
+  type: docker-image
+  source:
+    repository: AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/serverspec-container
+
 jobs:
 - name: prepare
   serial: true
@@ -22,6 +27,18 @@ jobs:
           <<: *docker-params
           build: git
           dockerfile: git/Dockerfile.build
+      - put: serverspec-container
+        params:
+          <<: *docker-params
+          build: git/serverspec
+          dockerfile: git/serverspec/Dockerfile.serverspec
+
+  - task: serverspec
+    privileged: true
+    image: serverspec-container
+    params:
+      IMAGE_NAME: dev-container
+    file: git/pipeline/tasks/serverspec.yml
   - task: pipeline
     image: dev-container
     params:

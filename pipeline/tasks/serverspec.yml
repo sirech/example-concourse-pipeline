@@ -1,0 +1,9 @@
+platform: linux
+inputs:
+  - name: git
+run:
+  path: bash
+  dir: git/serverspec
+  args:
+  - -c
+  - ./entrypoint.sh ./run

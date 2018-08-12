@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e
+set -o nounset
+set -o pipefail
+
+SCRIPT_DIR=$(cd "$(dirname "$0")" ; pwd -P)
+AWS_ACCOUNT="your_account"
+FULL_IMAGE_NAME="${AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/${IMAGE_NAME}"
+REGION="us-east-1"
+
+function dockerWorking() {
+  docker pull ${FULL_IMAGE_NAME} &> /dev/null
+}
+
+function ecrLogin() {
+  echo "Not logged into ECR yet, logging in"
+  login_command=$(aws ecr get-login --registry-ids ${AWS_ACCOUNT} --region eu-central-1 --no-include-email)
+  eval "${login_command}" &> /dev/null
+  if dockerWorking ; then
+    echo "Login succeeded"
+  else
+    echo "Login failed"
+    exit 1
+  fi
+}
+
+function main() {
+  dockerWorking || ecrLogin
+
+  pushd "${SCRIPT_DIR}/spec" > /dev/null
+    bundle install --path vendor/bundle
+    bundle exec rubocop
+    for spec in *_spec.rb; do
+      IMAGE=${FULL_IMAGE_NAME} bundle exec rspec "${spec}"
+    done
+  popd > /dev/null
+}
+
+main
