@@ -41,6 +41,10 @@ goal_linter-docker() {
   hadolint ${dockerfiles}
 }
 
+goal_test-js() {
+  npm test
+}
+
 TARGET=${1:-}
 if [ -n "${TARGET}" ] && type -t "goal_$TARGET" &>/dev/null; then
   "goal_$TARGET" "${@:2}"

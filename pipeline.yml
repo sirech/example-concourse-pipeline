@@ -81,6 +81,26 @@ jobs:
         TARGET: docker
       file: git/pipeline/tasks/linter.yml
 
+- name: test
+  serial: true
+  plan:
+  - aggregate:
+    - get: git
+      passed: [prepare]
+      trigger: true
+    - get: dev-container
+      passed: [prepare]
+  - task: test-js
+    image: dev-container
+    params:
+      <<: *common-params
+      TARGET: js
+    file: git/pipeline/tasks/tests.yml
+
+common-params: &common-params
+  CI: true
+  NPM_TOKEN: ((npm_auth_token))
+
 docker-params: &docker-params
   tag: git/.git/HEAD
   tag_as_latest: true
