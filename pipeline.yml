@@ -97,6 +97,21 @@ jobs:
       TARGET: js
     file: git/pipeline/tasks/tests.yml
 
+- name: build
+  serial: true
+  plan:
+  - aggregate:
+    - get: git
+      passed: [lint, test]
+      trigger: true
+    - get: dev-container
+      passed: [lint, test]
+  - task: build-dev
+    image: dev-container
+    params:
+      <<: *common-params
+    file: git/pipeline/tasks/build.yml
+
 common-params: &common-params
   CI: true
   NPM_TOKEN: ((npm_auth_token))

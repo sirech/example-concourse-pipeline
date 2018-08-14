@@ -45,6 +45,10 @@ goal_test-js() {
   npm test
 }
 
+goal_build() {
+  npm run build
+}
+
 TARGET=${1:-}
 if [ -n "${TARGET}" ] && type -t "goal_$TARGET" &>/dev/null; then
   "goal_$TARGET" "${@:2}"
