@@ -2,5 +2,5 @@
 
 set -e
 
-npm i
+yarn
 ./go "test-${TARGET}"
