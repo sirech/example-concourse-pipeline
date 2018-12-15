@@ -61,25 +61,25 @@ jobs:
       params:
         <<: *common-params
         TARGET: sh
-      file: git/pipeline/tasks/linter.yml
+      file: git/pipeline/tasks/linter/task.yml
     - task: lint-js
       image: dev-container
       params:
         <<: *common-params
         TARGET: js
-      file: git/pipeline/tasks/linter.yml
+      file: git/pipeline/tasks/linter/task.yml
     - task: lint-css
       image: dev-container
       params:
         <<: *common-params
         TARGET: css
-      file: git/pipeline/tasks/linter.yml
+      file: git/pipeline/tasks/linter/task.yml
     - task: lint-docker
       image: dev-container
       params:
         <<: *common-params
         TARGET: docker
-      file: git/pipeline/tasks/linter.yml
+      file: git/pipeline/tasks/linter/task.yml
 
 - name: test
   serial: true
@@ -95,7 +95,7 @@ jobs:
     params:
       <<: *common-params
       TARGET: js
-    file: git/pipeline/tasks/tests.yml
+    file: git/pipeline/tasks/tests/task.yml
 
 - name: build
   serial: true
@@ -110,7 +110,7 @@ jobs:
     image: dev-container
     params:
       <<: *common-params
-    file: git/pipeline/tasks/build.yml
+    file: git/pipeline/tasks/build/task.yml
 
 common-params: &common-params
   CI: true

@@ -4,10 +4,5 @@ inputs:
 caches:
   - path: git/node_modules
 run:
-  path: sh
+  path: pipeline/tasks/build/task.sh
   dir: git
-  args:
-  - -exc
-  - |
-    npm i
-    ./go build

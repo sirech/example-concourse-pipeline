@@ -3,11 +3,8 @@ inputs:
   - name: git
 caches:
   - path: git/node_modules
+params:
+  TARGET:
 run:
-  path: sh
+  path: pipeline/tasks/linter/task.sh
   dir: git
-  args:
-  - -exc
-  - |
-    npm i
-    ./go linter-${TARGET}
