@@ -49,10 +49,25 @@ goal_build() {
   npm run build
 }
 
-TARGET=${1:-}
-if [ -n "${TARGET}" ] && type -t "goal_$TARGET" &>/dev/null; then
-  "goal_$TARGET" "${@:2}"
-else
-  echo "Target not recognized"
-  exit 1
+validate-args() {
+  acceptable_args="$(declare -F | sed -n "s/declare -f goal_//p" | tr '\n' ' ')"
+
+  if [[ -z $1 ]]; then
+    echo "usage: $0 <goal>"
+    printf "\n$(declare -F | sed -n "s/declare -f goal_/ - /p")"
+    exit 1
+  fi
+
+  if [[ ! " $acceptable_args " =~ .*\ $1\ .* ]]; then
+    echo "Invalid argument: $1"
+    printf "\n$(declare -F | sed -n "s/declare -f goal_/ - /p")"
+    exit 1
+  fi
+}
+
+CMD=${1:-}
+shift || true
+if validate-args "${CMD}"; then
+  "goal_${CMD}"
+  exit 0
 fi
