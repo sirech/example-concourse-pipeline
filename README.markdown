@@ -4,6 +4,15 @@ This is an example for a pipeline for [Concourse CI](https://concourse-ci.org/).
 
 It is using a sample JavaScript project, but it can be easily adapted to serve any other language.
 
+## Running things
+
+There is a `go` script that is the entrypoint of all the tasks. Simply run it without arguments to get a list of available targets.
+
+### Requirements
+
+- `node` (last tested with `v13.6.0`)
+- `yarn` (last tested with `1.21.1`)
+
 ## ServerSpec
 
 [ServerSpec](https://serverspec.org/) allows you to run unit tests for infrastructure. You can use it to test that your containers, both build and production, are being created correctly.
