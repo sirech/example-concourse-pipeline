@@ -12,6 +12,7 @@ There is a `go` script that is the entrypoint of all the tasks. Simply run it wi
 
 - `node` (last tested with `v13.6.0`)
 - `yarn` (last tested with `1.21.1`)
+- `ruby` (last tested with `2.6.3`)
 
 ## ServerSpec
 

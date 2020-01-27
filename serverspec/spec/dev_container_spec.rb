@@ -7,8 +7,8 @@ describe 'dev-container' do
     end
 
     [
-      [:node, /10.4.1/],
-      [:npm, /6.1.0/]
+      [:node, /13.6/],
+      [:npm, /6.13/]
     ].each do |executable, version|
       describe command("#{executable} -v") do
         its(:stdout) { is_expected.to match(version) }
