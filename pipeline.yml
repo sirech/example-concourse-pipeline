@@ -31,7 +31,7 @@ jobs:
   plan:
   - get: git
     trigger: true
-  - aggregate:
+  - in_parallel:
       - put: dev-container
         params:
           <<: *docker-params
@@ -59,13 +59,13 @@ jobs:
 - name: lint
   serial: true
   plan:
-  - aggregate:
+  - in_parallel:
     - get: git
       passed: [prepare]
       trigger: true
     - get: dev-container
       passed: [prepare]
-  - aggregate:
+  - in_parallel:
     - task: lint-sh
       image: dev-container
       params:
@@ -94,7 +94,7 @@ jobs:
 - name: test
   serial: true
   plan:
-  - aggregate:
+  - in_parallel:
     - get: git
       passed: [prepare]
       trigger: true
@@ -110,7 +110,7 @@ jobs:
 - name: build
   serial: true
   plan:
-  - aggregate:
+  - in_parallel:
     - get: git
       passed: [lint, test]
       trigger: true
