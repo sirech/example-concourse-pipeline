@@ -18,6 +18,12 @@ goal_login-pipeline() {
   popd > /dev/null
 }
 
+goal_validate-pipeline() {
+  pushd "${SCRIPT_DIR}" > /dev/null
+  fly validate-pipeline -c pipeline.yml
+  popd > /dev/null
+}
+
 goal_update-pipeline() {
   pushd "${SCRIPT_DIR}" > /dev/null
   goal_login-pipeline
