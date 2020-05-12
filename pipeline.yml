@@ -15,6 +15,16 @@ resources:
   source:
     repository: AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/serverspec-container
 
+common-params: &common-params
+  CI: true
+  NPM_TOKEN: ((npm_auth_token))
+
+docker-params: &docker-params
+  tag: git/.git/HEAD
+  tag_as_latest: true
+  cache: true
+  cache_tag: latest
+
 jobs:
 - name: prepare
   serial: true
@@ -112,12 +122,3 @@ jobs:
       <<: *common-params
     file: git/pipeline/tasks/build/task.yml
 
-common-params: &common-params
-  CI: true
-  NPM_TOKEN: ((npm_auth_token))
-
-docker-params: &docker-params
-  tag: git/.git/HEAD
-  tag_as_latest: true
-  cache: true
-  cache_tag: latest
