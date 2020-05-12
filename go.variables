@@ -4,6 +4,14 @@ set -e
 set -o nounset
 set -o pipefail
 
-export CONCOURSE_URL=https://concourse-ci.domain.com
-export CONCOURSE_TARGET=example
+# This is the domain where concourse runs
+export CONCOURSE_URL=http://localhost:8080
+# This is the name used for fly to identify the instance
+export CONCOURSE_TARGET=example-concourse
+# The name of the pipeline to create
 export PIPELINE_NAME="example-concourse-pipeline"
+
+# Name of the user used for login
+export CONCOURSE_USER=test
+# Password for the user. This should *NOT* be written down here outside local development
+export CONCOURSE_PASSWORD=test
