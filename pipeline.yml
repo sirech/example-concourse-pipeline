@@ -2,7 +2,8 @@ resources:
 - name: git
   type: git
   source:
-    uri: git@github.com:sirech/example-concourse-pipeline.git
+    # Using https so that it works without credentials
+    uri: https://github.com/sirech/example-concourse-pipeline.git
     branch: master
 
 - name: dev-container
