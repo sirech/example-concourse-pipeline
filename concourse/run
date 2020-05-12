@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -e -u
+
+cd $(dirname $0)
+
+./keys/generate
+docker-compose up

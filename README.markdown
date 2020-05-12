@@ -4,6 +4,16 @@ This is an example for a pipeline for [Concourse CI](https://concourse-ci.org/).
 
 It is using a sample JavaScript project, but it can be easily adapted to serve any other language.
 
+## Running a local concourse
+
+Inspired by [this](https://github.com/concourse/concourse-docker), I've added a [script](./concourse/run) to run an instance of _Concourse_ locally for testing purposes. Just do:
+
+```shell
+./concourse/run
+```
+
+It is available under `localhost:8080` (test/test for auth)
+
 ## Running things
 
 There is a `go` script that is the entrypoint of all the tasks. Simply run it without arguments to get a list of available targets.
@@ -27,3 +37,4 @@ In order to run these tests, you need:
 - A [task](./pipeline/tasks/serverspec.yml) that runs that image with [elevated privileges](./pipeline.yml#L36-L41)
   - That script requires a special [entrypoint](./serverspec/entrypoint.sh)
   - The [run](./serverspec/run) script itself is making sure the image we built is accessible and running [all the tests](./serverspec/spec) that we have defined
+
