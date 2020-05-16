@@ -1,4 +1,4 @@
-FROM node:13.6-stretch
+FROM node:14.2-buster
 
 ENV CONCOURSE_SHA1='1d362b74d8aaa9b72985811f0d4be66f4fcc073b' \
     CONCOURSE_VERSION='6.0.0' \
