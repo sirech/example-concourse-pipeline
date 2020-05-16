@@ -54,15 +54,15 @@ jobs:
   #     platform: linux
   #     inputs:
   #       - name: git
-  #   file: git/pipeline/tasks/serverspec.yml
+  #   file: git/pipeline/tasks/serverspec/task.yml
   - task: pipeline
     image: dev-container
     params:
       CONCOURSE_USER: test
-      CONCOURSE_PASSWORD: ((concourse_password)
+      CONCOURSE_PASSWORD: ((concourse_password))
       # Overwritten for local pipeline only
       CONCOURSE_URL: http://web:8080
-    file: git/pipeline/tasks/update_pipeline.yml
+    file: git/pipeline/tasks/update_pipeline/task.yml
 
 - name: lint
   serial: true
