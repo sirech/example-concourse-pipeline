@@ -6,4 +6,4 @@ run:
   dir: git/serverspec
   args:
   - -c
-  - ./entrypoint.sh ./run
+  - ./run

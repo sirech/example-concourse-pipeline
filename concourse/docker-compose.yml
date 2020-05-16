@@ -3,10 +3,12 @@ version: '3'
 services:
   db:
     image: postgres
+
     environment:
       POSTGRES_DB: concourse
       POSTGRES_USER: concourse_user
       POSTGRES_PASSWORD: concourse_pass
+
     logging:
       driver: "json-file"
       options:
@@ -16,10 +18,14 @@ services:
   web:
     image: concourse/concourse
     command: web
-    links: [db]
-    depends_on: [db]
+
+    depends_on:
+      - db
+      - registry
+
     ports: ["8080:8080"]
     volumes: ["./keys/web:/concourse-keys"]
+
     environment:
       CONCOURSE_EXTERNAL_URL: http://localhost:8080
       CONCOURSE_POSTGRES_HOST: db
@@ -38,14 +44,23 @@ services:
     image: concourse/concourse
     command: worker
     privileged: true
+
     depends_on: [web]
+
     volumes: ["./keys/worker:/concourse-keys"]
-    links: [web]
+
     stop_signal: SIGUSR2
+
     environment:
       CONCOURSE_TSA_HOST: web:2222
+
     logging:
       driver: "json-file"
       options:
         max-file: "5"
         max-size: "10m"
+
+  registry:
+    image: registry
+
+    ports: ["5000:5000"]

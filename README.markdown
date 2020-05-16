@@ -14,6 +14,14 @@ Inspired by [this](https://github.com/concourse/concourse-docker), I've added a 
 
 It is available under `localhost:8080` (test/test for auth)
 
+### Adding the pipeline to the local installation
+
+A local docker registry is running so that the development image can be stored. Add the pipeline to the local installation with
+
+```shell
+./go update-pipeline
+```
+
 ## Running things
 
 There is a `go` script that is the entrypoint of all the tasks. Simply run it without arguments to get a list of available targets.

@@ -5,7 +5,7 @@ set -o nounset
 set -o pipefail
 
 # This is the domain where concourse runs
-export CONCOURSE_URL=http://localhost:8080
+export CONCOURSE_URL=${CONCOURSE_URL:-http://localhost:8080}
 # This is the name used for fly to identify the instance
 export CONCOURSE_TARGET=example-concourse
 # The name of the pipeline to create

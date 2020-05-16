@@ -9,12 +9,17 @@ resources:
 - name: dev-container
   type: docker-image
   source:
-    repository: AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/dev-container
+    # This should point to a real registry URL like AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com
+    repository: registry:5000/dev-container
+    # This is not required when using a real registry
+    insecure_registries:
+      - registry:5000
 
 - name: serverspec-container
   type: docker-image
   source:
-    repository: AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/serverspec-container
+    repository: sirech/dind-ruby
+    tag: 2.6.3
 
 common-params: &common-params
   CI: true
@@ -38,23 +43,26 @@ jobs:
           <<: *docker-params
           build: git
           dockerfile: git/Dockerfile.build
-      - put: serverspec-container
-        params:
-          <<: *docker-params
-          build: git/serverspec
-          dockerfile: git/serverspec/Dockerfile.serverspec
+      - get: serverspec-container
 
-  - task: serverspec
-    privileged: true
-    image: serverspec-container
-    params:
-      IMAGE_NAME: dev-container
-    file: git/pipeline/tasks/serverspec.yml
+  # Disabled for local only
+  # - task: serverspec
+  #   privileged: true
+  #   image: serverspec-container
+  #   params:
+  #     IMAGE_NAME: dev-container
+  #   config:
+  #     platform: linux
+  #     inputs:
+  #       - name: git
+  #   file: git/pipeline/tasks/serverspec.yml
   - task: pipeline
     image: dev-container
     params:
-      CONCOURSE_USER: concourse
+      CONCOURSE_USER: test
       CONCOURSE_PASSWORD: ((concourse_password)
+      # Overwritten for local pipeline only
+      CONCOURSE_URL: http://web:8080
     file: git/pipeline/tasks/update_pipeline.yml
 
 - name: lint
@@ -122,4 +130,3 @@ jobs:
     params:
       <<: *common-params
     file: git/pipeline/tasks/build/task.yml
-
