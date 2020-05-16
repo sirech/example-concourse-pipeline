@@ -2,7 +2,8 @@ platform: linux
 inputs:
   - name: git
 run:
-  path: ./go
+  path: bash
   dir: git
   args:
-  - update-pipeline
+  - -c
+  - ./go generate-pipeline && ./go update-pipeline
