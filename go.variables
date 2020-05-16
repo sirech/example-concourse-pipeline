@@ -10,6 +10,8 @@ export CONCOURSE_URL=${CONCOURSE_URL:-http://localhost:8080}
 export CONCOURSE_TARGET=example-concourse
 # The name of the pipeline to create
 export PIPELINE_NAME="example-concourse-pipeline"
+# The file where the pipeline is located
+export PIPELINE_FILE="pipeline.generated.yml"
 
 # Name of the user used for login
 export CONCOURSE_USER=test

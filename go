@@ -20,7 +20,7 @@ goal_login-pipeline() {
 
 goal_validate-pipeline() {
   pushd "${SCRIPT_DIR}" > /dev/null
-  fly validate-pipeline -c pipeline.yml
+  fly validate-pipeline -c "${PIPELINE_FILE}"
   popd > /dev/null
 }
 
@@ -31,8 +31,16 @@ goal_update-pipeline() {
   fly --target "${CONCOURSE_TARGET}" set-pipeline \
       --non-interactive \
       --pipeline "${PIPELINE_NAME}" \
-      --config pipeline.yml
+      --config "${PIPELINE_FILE}"
   popd > /dev/null
+}
+
+json2yaml() {
+  python3 -c 'import sys, yaml, json; print(yaml.dump(json.loads(sys.stdin.read())))'
+}
+
+goal_generate-pipeline() {
+  jsonnet pipeline.jsonnet | json2yaml > "${PIPELINE_FILE}"
 }
 
 goal_linter-sh() {
