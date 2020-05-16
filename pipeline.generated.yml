@@ -1,0 +1,120 @@
+jobs:
+- name: prepare
+  plan:
+  - get: git
+    passed: []
+    trigger: true
+  - in_parallel:
+    - get: serverspec-container
+      passed: []
+      trigger: true
+    - params:
+        build: git
+        cache: true
+        cache_tag: latest
+        dockerfile: git/Dockerfile.build
+        tag: git/.git/HEAD
+        tag_as_latest: true
+      put: dev-container
+  - file: git/pipeline/tasks/update_pipeline/task.yml
+    image: dev-container
+    params:
+      CI: true
+      CONCOURSE_PASSWORD: test
+      CONCOURSE_URL: http://web:8080
+      CONCOURSE_USER: test
+    task: pipeline
+  serial: true
+- name: lint
+  plan:
+  - in_parallel:
+    - get: git
+      passed:
+      - prepare
+      trigger: true
+    - get: dev-container
+      passed:
+      - prepare
+      trigger: true
+  - in_parallel:
+    - file: git/pipeline/tasks/linter/task.yml
+      image: dev-container
+      params:
+        CI: true
+        TARGET: sh
+      task: lint-sh
+    - file: git/pipeline/tasks/linter/task.yml
+      image: dev-container
+      params:
+        CI: true
+        TARGET: js
+      task: lint-js
+    - file: git/pipeline/tasks/linter/task.yml
+      image: dev-container
+      params:
+        CI: true
+        TARGET: css
+      task: lint-css
+    - file: git/pipeline/tasks/linter/task.yml
+      image: dev-container
+      params:
+        CI: true
+        TARGET: docker
+      task: lint-docker
+  serial: true
+- name: test
+  plan:
+  - in_parallel:
+    - get: git
+      passed:
+      - prepare
+      trigger: true
+    - get: dev-container
+      passed:
+      - prepare
+      trigger: true
+  - file: git/pipeline/tasks/tests/task.yml
+    image: dev-container
+    params:
+      CI: true
+      TARGET: js
+    task: test-js
+  serial: true
+- name: build
+  plan:
+  - in_parallel:
+    - get: git
+      passed:
+      - lint
+      - test
+      trigger: true
+    - get: dev-container
+      passed:
+      - lint
+      - test
+      trigger: true
+  - file: git/pipeline/tasks/build/task.yml
+    image: dev-container
+    params:
+      CI: true
+    task: build-dev
+  serial: true
+resources:
+- name: git
+  source:
+    branch: master
+    uri: https://github.com/sirech/example-concourse-pipeline.git
+  type: git
+- name: dev-container
+  source:
+    insecure_registries:
+    - registry:5000
+    repository: registry:5000/dev-container
+    tag: latest
+  type: docker-image
+- name: serverspec-container
+  source:
+    repository: sirech/dind-ruby
+    tag: 2.6.3
+  type: docker-image
+

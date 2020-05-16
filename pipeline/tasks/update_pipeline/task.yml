@@ -6,4 +6,4 @@ run:
   dir: git
   args:
   - -c
-  - ./go generate-pipeline && ./go update-pipeline
+  - ./go update-pipeline
