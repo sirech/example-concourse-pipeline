@@ -81,7 +81,7 @@ local jobs = [
     ]),
     Task('pipeline', 'update_pipeline', params = {
       CONCOURSE_USER: 'test',
-      CONCOURSE_PASSWORD: '((concourse_password))',
+      CONCOURSE_PASSWORD: 'test',
       CONCOURSE_URL: 'http://web:8080'
     })
   ]),
