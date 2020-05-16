@@ -1,7 +1,7 @@
 FROM node:13.6-stretch
 
-ENV CONCOURSE_SHA1='f397d4f516c0bd7e1c854ff6ea6d0b5bf9683750' \
-    CONCOURSE_VERSION='3.14.1' \
+ENV CONCOURSE_SHA1='1d362b74d8aaa9b72985811f0d4be66f4fcc073b' \
+    CONCOURSE_VERSION='6.0.0' \
     HADOLINT_VERSION='v1.10.4' \
     HADOLINT_SHA256='66815d142f0ed9b0ea1120e6d27142283116bf26'
 
@@ -9,9 +9,12 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update && \
     apt-get -y install --no-install-recommends sudo curl shellcheck && \
-    curl -Lk "https://github.com/concourse/concourse/releases/download/v${CONCOURSE_VERSION}/fly_linux_amd64" -o /usr/bin/fly && \
-    echo "${CONCOURSE_SHA1} /usr/bin/fly" | sha1sum -c - && \
+    curl -Lk "https://github.com/concourse/concourse/releases/download/v${CONCOURSE_VERSION}/fly-${CONCOURSE_VERSION}-linux-amd64.tgz" -o fly.tgz && \
+    tar xzvf fly.tgz && \
+    mv fly /usr/bin/fly && \
+    echo "${CONCOURSE_SHA1} fly.tgz" | sha1sum -c - && \
     chmod +x /usr/bin/fly && \
+    rm fly.tgz && \
     curl -Lk "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/hadolint-Linux-x86_64" -o /usr/bin/hadolint && \
     echo "${HADOLINT_SHA256} /usr/bin/hadolint" | sha1sum -c - && \
     chmod +x /usr/bin/hadolint && \

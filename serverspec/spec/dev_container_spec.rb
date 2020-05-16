@@ -27,4 +27,10 @@ describe 'dev-container' do
       end
     end
   end
+
+  describe 'fly' do
+    describe command('fly -v') do
+      its(:stdout) { is_expected.to match(/6.0.0/) }
+    end
+  end
 end
