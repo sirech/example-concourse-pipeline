@@ -23,7 +23,6 @@ resources:
 
 common-params: &common-params
   CI: true
-  NPM_TOKEN: ((npm_auth_token))
 
 docker-params: &docker-params
   tag: git/.git/HEAD

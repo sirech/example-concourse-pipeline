@@ -20,7 +20,8 @@
   "scripts": {
     "test": "jest",
     "linter:js": "node_modules/.bin/eslint src --ext jsx --ext js",
-    "linter:css": "node_modules/.bin/stylelint \"src/**/*.css\""
+    "linter:css": "node_modules/.bin/stylelint \"src/**/*.css\"",
+    "build": "echo 'Built'"
   },
   "stylelint": {
     "extends": "stylelint-config-recommended"
