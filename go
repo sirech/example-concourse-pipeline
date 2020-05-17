@@ -40,7 +40,12 @@ json2yaml() {
 }
 
 goal_generate-pipeline() {
-  jsonnet pipeline.jsonnet -J ../concourse-jsonnet-utils | json2yaml > "${PIPELINE_FILE}"
+  FILES=$(jsonnet pipeline.jsonnet -J ../concourse-jsonnet-utils -m .)
+
+  for file in $FILES; do
+    json2yaml < "$file" > "${file%.json}.yml"
+    rm "$file"
+  done
 }
 
 goal_linter-sh() {

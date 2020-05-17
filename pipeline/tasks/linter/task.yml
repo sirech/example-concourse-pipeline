@@ -1,10 +1,9 @@
-platform: linux
-inputs:
-  - name: git
 caches:
-  - path: git/node_modules
-params:
-  TARGET:
+- git/node_modules
+inputs:
+- git
+platform: linux
 run:
-  path: pipeline/tasks/linter/task.sh
   dir: git
+  path: pipeline/tasks/linter/task.sh
+

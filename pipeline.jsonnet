@@ -66,6 +66,10 @@ local jobs = [
 ];
 
 {
-  resources: resources,
-  jobs: jobs
+  "pipeline.generated.json": {
+    resources: resources,
+    jobs: jobs
+  }
+} + {
+  ['pipeline/tasks/%s/task.json' % [task]]: concourse.FileTask('pipeline/tasks/%s/task.sh' % [task], inputs = 'git', caches = 'git/node_modules') for task in ['build', 'linter', 'tests']
 }

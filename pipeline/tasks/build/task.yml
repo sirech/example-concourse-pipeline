@@ -1,8 +1,9 @@
-platform: linux
-inputs:
-  - name: git
 caches:
-  - path: git/node_modules
+- git/node_modules
+inputs:
+- git
+platform: linux
 run:
-  path: pipeline/tasks/build/task.sh
   dir: git
+  path: pipeline/tasks/build/task.sh
+
