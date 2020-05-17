@@ -1,30 +1,12 @@
 local source = 'git';
 local container = 'dev-container';
 
-local GitResource(name, repository, branch = 'master') = {
-  name: name,
-  type: 'git',
-  source: {
-    uri: repository,
-    branch: branch
-  },
-};
-
-local DockerResource(name, repository, tag = null, allow_insecure = false) = {
-  name: name,
-  type: 'docker-image',
-  source: {
-    repository: repository,
-    tag: if tag != null then tag else 'latest',
-  } + (
-    if allow_insecure then { insecure_registries: [std.split(repository, '/')[0]]} else {}
-  ),
-};
+local concourse = import 'concourse.libsonnet';
 
 local resources = [
-  GitResource(source, 'https://github.com/sirech/example-concourse-pipeline.git'),
-  DockerResource(container, 'registry:5000/dev-container', allow_insecure = true),
-  DockerResource('serverspec-container', 'sirech/dind-ruby', tag = '2.6.3'),
+  concourse.GitResource(source, 'https://github.com/sirech/example-concourse-pipeline.git'),
+  concourse.DockerResource(container, 'registry:5000/dev-container', allow_insecure = true),
+  concourse.DockerResource('serverspec-container', 'sirech/dind-ruby', tag = '2.6.3'),
 ];
 
 local common_params() = {
@@ -38,19 +20,9 @@ local docker_params(name) = {
   cache_tag: 'latest'
 };
 
-local Get(name, dependencies = []) = {
-  get: name,
-  trigger: true,
-  passed: dependencies
-};
-
-local Parallel(tasks) = {
-  in_parallel: tasks
-};
-
-local Inputs(dependencies = []) = Parallel([
-  Get(source, dependencies = dependencies),
-  Get(container, dependencies = dependencies),
+local Inputs(dependencies = []) = concourse.Parallel([
+  concourse.Get(source, dependencies = dependencies),
+  concourse.Get(container, dependencies = dependencies),
 ]);
 
 local Task(name, file, image = container, params = {}) = {
@@ -60,17 +32,11 @@ local Task(name, file, image = container, params = {}) = {
   file: '%s/pipeline/tasks/%s/task.yml' % [source, file]
 };
 
-local Job(name, plan) = {
-  name: name,
-  serial: true,
-  plan: plan
-};
-
 local jobs = [
-  Job('prepare', [
-    Get(source),
-    Parallel([
-      Get('serverspec-container'),
+  concourse.Job('prepare', plan = [
+    concourse.Get(source),
+    concourse.Parallel([
+      concourse.Get('serverspec-container'),
       {
         put: 'dev-container',
         params: docker_params(source) + {
@@ -86,19 +52,19 @@ local jobs = [
     })
   ]),
 
-  Job('lint', [
+  concourse.Job('lint', plan = [
     Inputs(['prepare']),
-    Parallel(
+    concourse.Parallel(
       [Task('lint-%s' % lang, 'linter', params = { TARGET: lang}) for lang in ['sh', 'js', 'css', 'docker']]
     )
   ]),
 
-  Job('test', [
+  concourse.Job('test', plan = [
     Inputs(['prepare']),
     Task('test-js', 'tests', params = { TARGET: 'js' })
   ]),
 
-  Job('build', [
+  concourse.Job('build', plan = [
     Inputs(['lint', 'test']),
     Task('build-dev', 'build')
   ])
