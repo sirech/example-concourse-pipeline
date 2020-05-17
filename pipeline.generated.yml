@@ -2,11 +2,9 @@ jobs:
 - name: prepare
   plan:
   - get: git
-    passed: []
     trigger: true
   - in_parallel:
     - get: serverspec-container
-      passed: []
       trigger: true
     - params:
         build: git
@@ -23,7 +21,7 @@ jobs:
       CONCOURSE_PASSWORD: test
       CONCOURSE_URL: http://web:8080
       CONCOURSE_USER: test
-    task: pipeline
+    task: update_pipeline
   serial: true
 - name: lint
   plan:
@@ -97,7 +95,7 @@ jobs:
     image: dev-container
     params:
       CI: true
-    task: build-dev
+    task: build
   serial: true
 resources:
 - name: git

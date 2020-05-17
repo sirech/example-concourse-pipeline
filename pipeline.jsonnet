@@ -3,16 +3,6 @@ local container = 'dev-container';
 
 local concourse = import 'concourse.libsonnet';
 
-local resources = [
-  concourse.GitResource(source, 'https://github.com/sirech/example-concourse-pipeline.git'),
-  concourse.DockerResource(container, 'registry:5000/dev-container', allow_insecure = true),
-  concourse.DockerResource('serverspec-container', 'sirech/dind-ruby', tag = '2.6.3'),
-];
-
-local common_params() = {
-  CI: true
-};
-
 local docker_params(name) = {
   tag: '%s/.git/HEAD' % [name],
   tag_as_latest: true,
@@ -20,17 +10,22 @@ local docker_params(name) = {
   cache_tag: 'latest'
 };
 
-local Inputs(dependencies = []) = concourse.Parallel([
-  concourse.Get(source, dependencies = dependencies),
-  concourse.Get(container, dependencies = dependencies),
-]);
+local Inputs(dependencies = []) = concourse.Parallel(
+  [concourse.Get(s, dependencies = dependencies) for s in [source, container]]
+);
 
-local Task(name, file, image = container, params = {}) = {
+local Task(name, file = name, image = container, params = {}) = {
   task: name,
   image: image,
-  params: common_params() + params,
+  params: { CI: true } + params,
   file: '%s/pipeline/tasks/%s/task.yml' % [source, file]
 };
+
+local resources = [
+  concourse.GitResource(source, 'https://github.com/sirech/example-concourse-pipeline.git'),
+  concourse.DockerResource(container, 'registry:5000/dev-container', allow_insecure = true),
+  concourse.DockerResource('serverspec-container', 'sirech/dind-ruby', tag = '2.6.3'),
+];
 
 local jobs = [
   concourse.Job('prepare', plan = [
@@ -45,7 +40,7 @@ local jobs = [
         }
       }
     ]),
-    Task('pipeline', 'update_pipeline', params = {
+    Task('update_pipeline', params = {
       CONCOURSE_USER: 'test',
       CONCOURSE_PASSWORD: 'test',
       CONCOURSE_URL: 'http://web:8080'
@@ -53,20 +48,20 @@ local jobs = [
   ]),
 
   concourse.Job('lint', plan = [
-    Inputs(['prepare']),
+    Inputs('prepare'),
     concourse.Parallel(
-      [Task('lint-%s' % lang, 'linter', params = { TARGET: lang}) for lang in ['sh', 'js', 'css', 'docker']]
+      [Task('lint-%s' % lang, 'linter', params = { TARGET: lang }) for lang in ['sh', 'js', 'css', 'docker']]
     )
   ]),
 
   concourse.Job('test', plan = [
-    Inputs(['prepare']),
+    Inputs('prepare'),
     Task('test-js', 'tests', params = { TARGET: 'js' })
   ]),
 
   concourse.Job('build', plan = [
     Inputs(['lint', 'test']),
-    Task('build-dev', 'build')
+    Task('build')
   ])
 ];
 
