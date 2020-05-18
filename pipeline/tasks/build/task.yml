@@ -1,7 +1,7 @@
 caches:
-- git/node_modules
+- path: git/node_modules
 inputs:
-- git
+- name: git
 platform: linux
 run:
   dir: git
