@@ -22,6 +22,10 @@ A local docker registry is running so that the development image can be stored. 
 ./go update-pipeline
 ```
 
+### Changing the pipeline
+
+Note that the pipeline is generated dynamically by using [jsonnet](https://jsonnet.org/). See [this blog post](https://hceris.com/templating-concourse-pipelines-with-jsonnet/) for more context about it.
+
 ## Running things
 
 There is a `go` script that is the entrypoint of all the tasks. Simply run it without arguments to get a list of available targets.
