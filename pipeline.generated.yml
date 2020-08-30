@@ -14,14 +14,14 @@ jobs:
         tag: git/.git/HEAD
         tag_as_latest: true
       put: dev-container
-  - file: git/pipeline/tasks/update_pipeline/task.yml
+  - file: git/pipeline/tasks/update-pipeline/task.yml
     image: dev-container
     params:
       CI: true
       CONCOURSE_PASSWORD: test
       CONCOURSE_URL: http://web:8080
       CONCOURSE_USER: test
-    task: update_pipeline
+    task: update-pipeline
   serial: true
 - name: lint
   plan:

@@ -62,7 +62,7 @@ jobs:
       CONCOURSE_PASSWORD: ((concourse_password))
       # Overwritten for local pipeline only
       CONCOURSE_URL: http://web:8080
-    file: git/pipeline/tasks/update_pipeline/task.yml
+    file: git/pipeline/tasks/update-pipeline/task.yml
 
 - name: lint
   serial: true
