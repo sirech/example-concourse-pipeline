@@ -16,7 +16,7 @@ services:
         max-size: "10m"
 
   web:
-    image: concourse/concourse:ubuntu
+    image: concourse/concourse:6.5.1-ubuntu
     command: web
 
     depends_on:
@@ -41,7 +41,7 @@ services:
         max-size: "10m"
 
   worker:
-    image: concourse/concourse:ubuntu
+    image: concourse/concourse:6.5.1-ubuntu
     command: worker
     privileged: true
 
