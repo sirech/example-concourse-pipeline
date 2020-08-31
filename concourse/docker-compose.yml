@@ -16,7 +16,7 @@ services:
         max-size: "10m"
 
   web:
-    image: concourse/concourse
+    image: concourse/concourse:ubuntu
     command: web
 
     depends_on:
@@ -41,7 +41,7 @@ services:
         max-size: "10m"
 
   worker:
-    image: concourse/concourse
+    image: concourse/concourse:ubuntu
     command: worker
     privileged: true
 
@@ -53,6 +53,7 @@ services:
 
     environment:
       CONCOURSE_TSA_HOST: web:2222
+      CONCOURSE_GARDEN_DNS_PROXY_ENABLE: "true"
 
     logging:
       driver: "json-file"
