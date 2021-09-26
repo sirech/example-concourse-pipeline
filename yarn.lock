@@ -1385,17 +1385,7 @@ browser-process-hrtime@^1.0.0:
   resolved "https://registry.yarnpkg.com/browser-process-hrtime/-/browser-process-hrtime-1.0.0.tgz#3c9b4b7d782c8121e56f10106d84c0d0ffc94626"
   integrity sha512-9o5UecI3GhkpM6DrXr69PblIuWxPKk9Y0jHBRhdocZ2y7YECBFCsHm79Pr3OyR2AvjhDkabFJaDJMYRazHgsow==
 
-browserslist@^4.12.0:
-  version "4.14.0"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.14.0.tgz#2908951abfe4ec98737b72f34c3bcedc8d43b000"
-  integrity sha512-pUsXKAF2lVwhmtpeA3LJrZ76jXuusrNyhduuQs7CDFf9foT4Y38aQOserd2lMe5DSSrjf3fx34oHwryuvxAUgQ==
-  dependencies:
-    caniuse-lite "^1.0.30001111"
-    electron-to-chromium "^1.3.523"
-    escalade "^3.0.2"
-    node-releases "^1.1.60"
-
-browserslist@^4.16.6:
+browserslist@^4.12.0, browserslist@^4.16.6:
   version "4.17.1"
   resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.17.1.tgz#a98d104f54af441290b7d592626dd541fa642eb9"
   integrity sha512-aLD0ZMDSnF4lUt4ZDNgqi5BUn9BZ7YdQdI/cYlILrhdSSZJLU9aNZoD5/NBmM4SK34APB2e83MOsRt1EnkuyaQ==
@@ -1459,12 +1449,7 @@ camelcase@^6.2.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.2.0.tgz#924af881c9d525ac9d87f40d964e5cea982a1809"
   integrity sha512-c7wVvbw3f37nuobQNtgsgG9POC9qMbNuMQmTCqZv23b6MIz0fcYpBiOlv9gEN/hdLdnZTDQhg6e9Dq5M1vKvfg==
 
-caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001111:
-  version "1.0.30001120"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001120.tgz#cd21d35e537214e19f7b9f4f161f7b0f2710d46c"
-  integrity sha512-JBP68okZs1X8D7MQTY602jxMYBmXEKOFkzTBaNSkubooMPFOAv2TXWaKle7qgHpjLDhUzA/TMT0qsNleVyXGUQ==
-
-caniuse-lite@^1.0.30001259:
+caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001259:
   version "1.0.30001260"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001260.tgz#e3be3f34ddad735ca4a2736fa9e768ef34316270"
   integrity sha512-Fhjc/k8725ItmrvW5QomzxLeojewxvqiYCKeFcfFEhut28IVLdpHU19dneOmltZQIE5HNbawj1HYD+1f2bM1Dg==
@@ -1848,11 +1833,6 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
-electron-to-chromium@^1.3.523:
-  version "1.3.555"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.555.tgz#a096716ff77cf8da9a608eb628fd6927869503d2"
-  integrity sha512-/55x3nF2feXFZ5tdGUOr00TxnUjUgdxhrn+eCJ1FAcoAt+cKQTjQkUC5XF4frMWE1R5sjHk+JueuBalimfe5Pg==
-
 electron-to-chromium@^1.3.846:
   version "1.3.850"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.850.tgz#c56c72abfeab051b4b328beb894461c5912d0456"
@@ -1922,11 +1902,6 @@ es-to-primitive@^1.2.1:
     is-callable "^1.1.4"
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
-
-escalade@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/escalade/-/escalade-3.0.2.tgz#6a580d70edb87880f22b4c91d0d56078df6962c4"
-  integrity sha512-gPYAU37hYCUhW5euPeR+Y74F7BL+IBsV93j5cvGriSaD1aG6MGsqsV1yamRdrWrb2j3aiZvb0X+UBOWpx3JWtQ==
 
 escalade@^3.1.1:
   version "3.1.1"
@@ -3904,11 +3879,6 @@ node-modules-regexp@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/node-modules-regexp/-/node-modules-regexp-1.0.0.tgz#8d9dbe28964a4ac5712e9131642107c71e90ec40"
   integrity sha1-jZ2+KJZKSsVxLpExZCEHxx6Q7EA=
-
-node-releases@^1.1.60:
-  version "1.1.60"
-  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.60.tgz#6948bdfce8286f0b5d0e5a88e8384e954dfe7084"
-  integrity sha512-gsO4vjEdQaTusZAEebUWp2a5d7dF5DYoIpDG7WySnk7BuZDW+GPpHXoXXuYawRBr/9t5q54tirPz79kFIWg4dA==
 
 node-releases@^1.1.76:
   version "1.1.76"
